@@ -1,9 +1,10 @@
 import {promises as fs} from 'fs';
 import crypto from 'crypto';
-import {Category, CategoryWithoutId} from "./types";
+import {Item, ItemWithoutId} from "./types";
+
 
 const filename = './db.json';
-let data: Category[] = [];
+let data: Item[] = [];
 
 const fileDb = {
     async init() {
@@ -17,13 +18,13 @@ const fileDb = {
     async getItems() {
         return data;
     },
-    async addItem(item: CategoryWithoutId) {
+    async addItem(newItemData: ItemWithoutId) {
         const id = crypto.randomUUID();
-        const category = {id, ...item};
-        data.push(category);
+        const newItem = { id, ...newItemData };
+        data.push(newItem);
         await this.save();
 
-        return category;
+        return newItem;
     },
     async save() {
         return fs.writeFile(filename, JSON.stringify(data));
