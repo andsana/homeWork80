@@ -1,18 +1,12 @@
-import {Router} from "express";
-import fileDb from "../fileDb";
-import {CategoryWithoutId} from "../types";
-import {imagesUpload} from "../multer";
+import { Router } from 'express';
+import fileDb from '../fileDb';
+import { CategoryWithoutId } from '../types';
+import { imagesUpload } from '../multer';
+
 const categoriesRouter = Router();
 
-
-interface category {
-    id: string,
-    name: string,
-    description: string,
-}
-
 categoriesRouter.get('/', async (req, res) => {
-    const categories = await fileDb.getItems();
+    const categories = await fileDb.getCategories();
     res.send(categories);
 });
 
@@ -26,7 +20,7 @@ categoriesRouter.post('/', imagesUpload.single('image'), async (req, res) => {
         description: req.body.description,
     };
 
-    const newCategory = await fileDb.addItem(category);
+    const newCategory = await fileDb.addCategory(category);
     res.send(newCategory);
 });
 
